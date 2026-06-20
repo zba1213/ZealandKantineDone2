@@ -1,0 +1,76 @@
+﻿@page
+@model ZealandKantine.Pages.PaysiteModel
+@{
+}
+<div style="max-width: 600px; margin: 50px auto; padding: 30px; background: white; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); text-align: center;">
+
+    <!-- Mobilpay Logo (simpelt SVG) -->
+    <div style="margin-bottom: 30px;">
+        <svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="200" height="80" rx="10" fill="#1a237e" />
+            <text x="20" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white">MobilePay</text>
+            <circle cx="170" cy="40" r="20" fill="white" opacity="0.9" />
+            <text x="162" y="48" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a237e">📱</text>
+        </svg>
+    </div>
+
+    <h2 style="color: #333; margin-bottom: 20px;">💳 Betaling</h2>
+
+    <!-- Fiktivt ordrenummer -->
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+        <p style="color: #666; font-size: 14px; margin-bottom: 5px;">📦 Mobilpay nummer:</p>
+        <p style="font-size: 32px; font-weight: bold; color: #1a237e; letter-spacing: 3px; margin: 0;">
+            @{
+                var random = new Random();
+                var orderNumber = random.Next(10000, 99999).ToString();
+            }
+            @orderNumber
+        </p>
+        <p style="color: #999; font-size: 12px; margin-top: 5px;">(Ordrenummer - gem dette til afhentning)</p>
+    </div>
+
+    <!-- Mobilpay betalingsknap -->
+    <div style="margin: 30px 0;">
+        <button onclick="alert('📱 Åbner MobilePay...\n\nOrdernummer: @orderNumber\n\nVi ses i frokostpausen! 🍽️')"
+                style="background: #1a237e; color: white; border: none; padding: 18px 50px; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(26, 35, 126, 0.3);">
+            📱 Betal med MobilePay
+        </button>
+    </div>
+
+    <!-- Besked -->
+    <div style="background: #e8f5e9; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #4caf50;">
+        <p style="font-size: 18px; color: #2e7d32; margin: 0;">
+            🍽️ <strong>Vi ses i frokostpausen når siden åbner!</strong>
+        </p>
+        <p style="color: #666; font-size: 14px; margin-top: 10px;">
+            Din bestilling er registreret. Vis dit ordrenummer ved afhentning.
+        </p>
+    </div>
+
+    <!-- Tilbage knap -->
+    <a href="/" style="display: inline-block; margin-top: 20px; color: #666; text-decoration: none; padding: 10px 20px; border: 1px solid #ddd; border-radius: 5px; transition: background 0.2s;"
+       onmouseover="this.style.background='#f5f5f5'" onmouseout="this.style.background='transparent'">
+        ⬅️ Tilbage til menuen
+    </a>
+
+    <!-- Footer -->
+    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee; color: #999; font-size: 12px;">
+        <p>© 2026 - ZealandKantine - Beløb trækkes via MobilePay</p>
+    </div>
+</div>
+
+<style>
+    body {
+        background: #f5f5f5;
+        font-family: Arial, sans-serif;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 25px rgba(26, 35, 126, 0.4);
+    }
+
+    button:active {
+        transform: scale(0.95);
+    }
+</style>

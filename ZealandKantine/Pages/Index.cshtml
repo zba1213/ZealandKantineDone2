@@ -1,0 +1,161 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h2>🍔 Kantine Menu</h2>
+    <div>
+        <a href="/Cart" class="btn btn-info" style="background: purple; color: white;">
+            🛒 Kurv (@Model.GetCartItemCount())
+        </a>
+
+        <!-- Vis brugerinfo og logud knap hvis bruger er logget ind -->
+        @if (HttpContext.Session.GetString("IsLoggedIn") == "true")
+        {
+            <span style="margin: 0 10px; color: #333;">
+                👤 @HttpContext.Session.GetString("Username")
+                (@HttpContext.Session.GetString("UserRole"))
+            </span>
+
+            <form method="post" asp-page-handler="Logout" style="display: inline;">
+                <button type="submit" class="btn btn-danger" style="background: #dc3545; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer;">
+                    🚪 Log ud
+                </button>
+            </form>
+        }
+        else
+        {
+            <a href="/Login" class="btn btn-primary" style="background: blue; color: white; padding: 8px 15px; text-decoration: none; border-radius: 5px;">
+                🔐 Login
+            </a>
+        }
+    </div>
+</div>
+
+<!-- Knapper til at tilføje mad/drikke - KUN FOR ADMIN -->
+@if (HttpContext.Session.GetString("IsAdmin") == "true")
+{
+    <div style="margin-bottom: 20px;">
+        <a href="/Addfood" class="btn" style="background: #FF6B35; color: white;">➕ Tilføj Mad</a>
+        <a href="/AddDrink?isDrink=true" class="btn" style="background: #00B4D8; color: white;">➕ Tilføj Drik</a>
+    </div>
+}
+
+<!-- Madretter -->
+<h3>🍕 Madretter</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Pris</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FoodItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price kr</td>
+                <td>
+                    <form method="post" asp-page-handler="AddToCart" style="display: inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-success" style="background: #28a745;">🛒 Vælg</button>
+                    </form>
+
+                    <!-- Rediger og Slet knapper - KUN FOR ADMIN -->
+                    @if (HttpContext.Session.GetString("IsAdmin") == "true")
+                    {
+                        <form method="post" asp-page-handler="DeleteProduct" style="display: inline;" onsubmit="return confirm('Er du sikker?');">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">🗑️</button>
+                        </form>
+                        
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Drikkevarer -->
+<h3>🥤 Drikkevarer</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Navn</th>
+            <th>Pris</th>
+            <th>Handling</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DrinkItems)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price kr</td>
+                <td>
+                    <form method="post" asp-page-handler="AddToCart" style="display: inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-success" style="background: #28a745;">🛒 Vælg</button>
+                    </form>
+
+                    <!-- Rediger og Slet knapper - KUN FOR ADMIN -->
+                    @if (HttpContext.Session.GetString("IsAdmin") == "true")
+                    {
+                        <form method="post" asp-page-handler="DeleteProduct" style="display: inline;" onsubmit="return confirm('Er du sikker?');">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-danger">🗑️</button>
+                        </form>
+                        
+                        
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .btn {
+        padding: 8px 15px;
+        text-decoration: none;
+        color: white;
+        border-radius: 5px;
+        margin: 5px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: blue;
+    }
+
+    .btn-success {
+        background: green;
+    }
+
+    .btn-warning {
+        background: orange;
+    }
+
+    .btn-danger {
+        background: red;
+    }
+
+    .btn-info {
+        background: purple;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #ddd;
+    }
+</style>
